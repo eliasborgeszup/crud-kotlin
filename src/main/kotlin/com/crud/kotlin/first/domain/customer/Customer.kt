@@ -14,8 +14,9 @@ class Customer(
     @Column(nullable = false)
     var name: String = "",
 
+    //TODO: LocalDate
     @Column(nullable = false)
-    var birtDate: LocalDate,
+    var birthDate: String = "",
 
     @Column(nullable = false, unique = true, length = 11)
     var cpf: String = "",
