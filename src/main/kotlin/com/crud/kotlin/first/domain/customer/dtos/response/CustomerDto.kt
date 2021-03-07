@@ -1,11 +1,12 @@
 package com.crud.kotlin.first.domain.customer.dtos.response
 
 import com.crud.kotlin.first.domain.customer.Customer
+import java.time.LocalDate
 
 class CustomerDto(
     var id: String = "",
     var name: String = "",
-    var birthDate: String = "",
+    var birthDate: LocalDate = LocalDate.now(),
     var cpf: String = "",
     var email: String = "",
     var phone: String = "",
