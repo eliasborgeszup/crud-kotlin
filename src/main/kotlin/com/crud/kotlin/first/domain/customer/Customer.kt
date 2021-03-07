@@ -1,6 +1,7 @@
 package com.crud.kotlin.first.domain.customer
 
 import com.crud.kotlin.first.domain.customer.dtos.request.CreateCustomerDto
+import com.crud.kotlin.first.domain.customer.dtos.request.UpdateCustomerDto
 import java.time.LocalDate
 import java.util.*
 import javax.persistence.Column
@@ -40,8 +41,23 @@ class Customer(
         this.email = dto.email
         this.phone = dto.phone
         this.address = dto.address
-
+        //Log
         return repository.save(this).id
+    }
+
+    fun update(dto: UpdateCustomerDto, repository: CustomerRepository): String {
+        this.name = dto.name
+        this.birthDate = dto.birthDate
+        this.email = dto.email
+        this.phone = dto.phone
+        this.address = dto.address
+        //Log
+        return repository.save(this).id
+    }
+
+    fun delete(customer: Customer, repository: CustomerRepository) {
+        //Log
+        repository.delete(customer)
     }
 
 }

@@ -10,9 +10,9 @@ class CustomerDto(
     var cpf: String = "",
     var email: String = "",
     var phone: String = "",
-    var address: String = "",
+    var address: String = ""
 )  {
-    fun fromCustomer(customer: Customer): CustomerDto{
+    infix fun fromCustomer(customer: Customer): CustomerDto{
         return CustomerDto(
             customer.id,
             customer.name,
