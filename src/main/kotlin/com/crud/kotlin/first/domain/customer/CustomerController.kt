@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus.*
 import org.springframework.data.domain.Sort.Direction.ASC
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/customers")
@@ -18,7 +19,7 @@ class CustomerController(
 ) {
     @ResponseStatus(CREATED)
     @PostMapping
-    fun create(@RequestBody dto: CreateCustomerDto): CustomerIdDto {
+    fun create(@Valid @RequestBody dto: CreateCustomerDto): CustomerIdDto {
         return CustomerIdDto(service.create(dto))
     }
 
@@ -28,18 +29,18 @@ class CustomerController(
         @PageableDefault(sort = ["name"], direction = ASC, size = 20)
         page: Pageable,
     ): Page<CustomerDto>{
-        return service.getAll(page).map { CustomerDto() fromCustomer(it) }
+        return service.getAll(page).map { CustomerDto.fromCustomer(it) }
     }
 
     @ResponseStatus(OK)
     @GetMapping("/{cpf}")
     fun getByCpf(@PathVariable cpf: String): CustomerDto{
-        return CustomerDto() fromCustomer(service.getByCpf(cpf))
+        return CustomerDto.fromCustomer(service.getByCpf(cpf))
     }
 
     @ResponseStatus(OK)
     @PutMapping("/{cpf}")
-    fun update(@PathVariable cpf: String, @RequestBody dto: UpdateCustomerDto): CustomerIdDto{
+    fun update(@PathVariable cpf: String, @Valid @RequestBody dto: UpdateCustomerDto): CustomerIdDto{
         return CustomerIdDto(service.update(cpf, dto))
     }
 
