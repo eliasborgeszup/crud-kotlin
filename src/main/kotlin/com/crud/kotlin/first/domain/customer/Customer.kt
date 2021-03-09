@@ -10,54 +10,47 @@ import javax.persistence.Id
 
 @Entity
 class Customer(
-    @Id
-    @Column(updatable = false, unique = true, nullable = false)
-    var id: String = "",
+        @Id
+        @Column(updatable = false, unique = true, nullable = false)
+        val id: String,
 
-    @Column(nullable = false)
-    var name: String = "",
+        @Column(nullable = false)
+        val name: String,
 
-    //TODO: LocalDate
-    @Column(nullable = false)
-    var birthDate: LocalDate = LocalDate.now(),
+        @Column(nullable = false)
+        val birthDate: LocalDate,
 
-    @Column(nullable = false, unique = true, length = 11)
-    var cpf: String = "",
+        @Column(nullable = false, unique = true, length = 11)
+        val cpf: String,
 
-    @Column(nullable = false)
-    var email: String = "",
+        @Column(nullable = false)
+        val email: String,
 
-    @Column(nullable = false, length = 11)
-    var phone: String = "",
+        @Column(nullable = false, length = 11)
+        val phone: String,
 
-    @Column(nullable = false)
-    var address: String = "",
+        @Column(nullable = false)
+        val address: String,
 ) {
-    fun create(dto: CreateCustomerDto, repository: CustomerRepository): String {
-        this.id = UUID.randomUUID().toString()
-        this.name = dto.name
-        this.birthDate = dto.birthDate
-        this.cpf = dto.cpf
-        this.email = dto.email
-        this.phone = dto.phone
-        this.address = dto.address
-        //Log
-        return repository.save(this).id
-    }
+    companion object {
+        fun create(dto: CreateCustomerDto, repository: CustomerRepository): String {
+            return repository.save(
+                    Customer(UUID.randomUUID().toString(),
+                            dto.name,
+                            dto.birthDate,
+                            dto.cpf,
+                            dto.email,
+                            dto.phone,
+                            dto.address
+                    )).id
+        }
 
-    fun update(dto: UpdateCustomerDto, repository: CustomerRepository): String {
-        this.name = dto.name
-        this.birthDate = dto.birthDate
-        this.email = dto.email
-        this.phone = dto.phone
-        this.address = dto.address
-        //Log
-        return repository.save(this).id
+        fun update(customer: Customer, repository: CustomerRepository): String {
+            return repository.save(customer).id
+        }
     }
 
     fun delete(customer: Customer, repository: CustomerRepository) {
-        //Log
         repository.delete(customer)
     }
-
 }

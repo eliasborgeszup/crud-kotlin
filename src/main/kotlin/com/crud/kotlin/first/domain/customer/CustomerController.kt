@@ -13,18 +13,16 @@ import org.springframework.http.HttpStatus.*
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
+const val SIZE_MAX_PAGE: Int = 100
+
 @RestController
 @RequestMapping("/customers")
 class CustomerController(
     private var service: CustomerService
 ) {
-    val SIZE_MAX_PAGE: Int = 100
-
     @ResponseStatus(CREATED)
     @PostMapping
-    fun create(@Valid @RequestBody dto: CreateCustomerDto): CustomerIdDto {
-        return CustomerIdDto(service.create(dto))
-    }
+    fun create(@Valid @RequestBody dto: CreateCustomerDto) = CustomerIdDto(service.create(dto))
 
     @ResponseStatus(OK)
     @GetMapping
@@ -39,15 +37,11 @@ class CustomerController(
 
     @ResponseStatus(OK)
     @GetMapping("/{cpf}")
-    fun getByCpf(@PathVariable cpf: String): CustomerDto{
-        return CustomerDto.fromCustomer(service.getByCpf(cpf))
-    }
+    fun getByCpf(@PathVariable cpf: String) = CustomerDto.fromCustomer(service.getByCpf(cpf))
 
     @ResponseStatus(OK)
     @PutMapping("/{cpf}")
-    fun update(@PathVariable cpf: String, @Valid @RequestBody dto: UpdateCustomerDto): CustomerIdDto{
-        return CustomerIdDto(service.update(cpf, dto))
-    }
+    fun update(@PathVariable cpf: String, @Valid @RequestBody dto: UpdateCustomerDto) = CustomerIdDto(service.update(cpf, dto))
 
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{cpf}")

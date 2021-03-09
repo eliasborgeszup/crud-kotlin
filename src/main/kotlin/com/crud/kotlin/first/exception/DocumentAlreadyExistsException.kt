@@ -4,4 +4,4 @@ import java.lang.RuntimeException
 
 class DocumentAlreadyExistsException(
         override var message: String
-) : RuntimeException() {}
+) : RuntimeException()

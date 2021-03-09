@@ -4,4 +4,4 @@ import java.lang.RuntimeException
 
 class NotFoundException(
         override var message: String
-) : RuntimeException() {}
+) : RuntimeException()
