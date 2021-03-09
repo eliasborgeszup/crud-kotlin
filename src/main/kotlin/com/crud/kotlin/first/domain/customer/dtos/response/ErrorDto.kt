@@ -1,5 +1,5 @@
 package com.crud.kotlin.first.domain.customer.dtos.response
 
-class ResponseExceptionDto(
+class ErrorDto(
         var message: String
 ) {}
