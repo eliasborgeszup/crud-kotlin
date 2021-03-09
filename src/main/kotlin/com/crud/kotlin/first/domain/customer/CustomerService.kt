@@ -9,23 +9,24 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
-class CustomerService (
-    private var repository: CustomerRepository
-        ){
+class CustomerService(
+        private var repository: CustomerRepository
+) {
     private val log: Logger = LoggerFactory.getLogger(CustomerService::class.java)
 
     fun create(dto: CreateCustomerDto): String {
-        if(repository.existsByCpf(dto.cpf)){
-            log.error("Customer not created, customer CPF = {} register", dto.cpf)
+        if (repository.existsByCpf(dto.cpf)) {
+            log.error("Customer not created, customer CPF = ${dto.cpf} register")
 
             throw DocumentAlreadyExistsException(
-                String.format("CustomerServiceImpl: create, customer = %s register",
-                    dto.cpf));
+                    "CustomerServiceImpl: create, customer = ${dto.cpf} register"
+            )
         }
-        log.info("Create customer = {}", dto)
-        return Customer().create(dto, repository)
+        log.info("Create customer = $dto")
+        return Customer.create(dto, repository)
     }
 
     fun getAll(page: Pageable): Page<Customer> {
@@ -34,41 +35,48 @@ class CustomerService (
 
     fun getByCpf(cpf: String): Customer {
         return repository.findByCpf(cpf).orElseThrow {
-            log.error("Customer not found, customer CPF = {} not found", cpf)
+            log.error("Customer not found, customer CPF = $cpf not found")
 
             throw NotFoundException(
-                String.format("CustomerServiceImpl: findByCpf, customer CPF = %s not found", cpf)
-            ) }
+                    "CustomerServiceImpl: findByCpf, customer CPF = $cpf not found"
+            )
+        }
     }
 
     fun update(cpf: String, dto: UpdateCustomerDto): String {
         val customer: Customer = repository.findByCpf(cpf).orElseThrow {
-            log.error("Costumer not update, costumer = {} not found", cpf)
+            log.error("Costumer not update, costumer = $cpf not found")
 
             throw NotFoundException(
-                String.format("CustomerServiceImpl: findByCpf, customer CPF = %s not found", cpf)
-            ) }
+                    "CustomerServiceImpl: findByCpf, customer CPF = $cpf not found"
+            )
+        }
 
-        log.info("Update customer, cpf = {}, customerBefore = {}, customerAfter = {}",
-                cpf,
-                dto,
-                customer);
+        log.info("Update customer, cpf = $cpf, customerBefore = $dto, customerAfter = $customer");
 
-        return customer.update(dto, repository)
+        return Customer.update(
+                Customer(
+                        customer.id,
+                        dto.name,
+                        dto.birthDate,
+                        customer.cpf,
+                        dto.email,
+                        dto.phone,
+                        dto.address
+                ), repository)
     }
 
     fun delete(cpf: String) {
         val customer: Customer = repository.findByCpf(cpf).orElseThrow {
-            log.error("Customer not delete, customer CPF = {} not found", cpf)
+            log.error("Customer not delete, customer CPF = $cpf not found")
 
             throw NotFoundException(
-                String.format("CustomerServiceImpl: findByCpf, customer CPF = %s not found", cpf)
-            ) }
+                    "CustomerServiceImpl: findByCpf, customer CPF = $cpf not found"
+            )
+        }
 
-        log.info("Delete customer = {}", customer)
+        log.info("Delete customer = $customer")
 
         return customer.delete(customer, repository)
     }
-
-
 }

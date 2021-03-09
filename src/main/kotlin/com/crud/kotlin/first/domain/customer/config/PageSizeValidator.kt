@@ -14,9 +14,9 @@ class PageSizeValidator {
                 SIZE_MAX_PAGE: Int,
                 size: Int) {
             if (size > SIZE_MAX_PAGE){
-                log.error("Pagination size limit exceeded = {}, maximum allowed = {}", size, SIZE_MAX_PAGE)
+                log.error("Pagination size limit exceeded = $size , maximum allowed = $SIZE_MAX_PAGE")
 
-                throw PaginationSizeLimitExceededException(nameClass + " :findAll")
+                throw PaginationSizeLimitExceededException(nameClass + ":findAll")
             }
         }
     }

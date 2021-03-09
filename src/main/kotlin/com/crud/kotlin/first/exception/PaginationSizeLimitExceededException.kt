@@ -4,5 +4,4 @@ import java.lang.RuntimeException
 
 class PaginationSizeLimitExceededException(
         override var message: String
-) : RuntimeException() {
-}
+) : RuntimeException()

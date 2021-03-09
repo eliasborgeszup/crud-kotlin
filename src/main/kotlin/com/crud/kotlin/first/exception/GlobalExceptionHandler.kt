@@ -35,11 +35,20 @@ class GlobalExceptionHandler {
         log.info(exception.message)
         return ErrorDto("Quantidade de paginas maior que o permitido.")
     }
-    @ResponseStatus(BAD_REQUEST)
+
+/*    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleIllegalArgumentException(exception: MethodArgumentNotValidException): MutableList<ObjectError> {
-        return exception.bindingResult.allErrors
-    }
+    fun handleIllegalArgumentException(exception: MethodArgumentNotValidException): List<ErrorDto>{
+        var errors: MutableList<ErrorDto> = mutableListOf()
+
+        for (error: ObjectError in exception.bindingResult.allErrors){
+            var messageDisplayed: StringBuilder = StringBuilder()
+
+            messageDisplayed.append(error.defaultMessage)
+            errors.add(error(messageDisplayed.toString()))
+        }
+        return errors
+    }*/
 
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)

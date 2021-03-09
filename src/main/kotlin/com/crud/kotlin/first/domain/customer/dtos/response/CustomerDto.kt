@@ -3,14 +3,14 @@ package com.crud.kotlin.first.domain.customer.dtos.response
 import com.crud.kotlin.first.domain.customer.Customer
 import java.time.LocalDate
 
-class CustomerDto(
-        var id: String = "",
-        var name: String = "",
-        var birthDate: LocalDate = LocalDate.now(),
-        var cpf: String = "",
-        var email: String = "",
-        var phone: String = "",
-        var address: String = ""
+data class CustomerDto(
+        val id: String,
+        val name: String,
+        val birthDate: LocalDate,
+        val cpf: String,
+        val email: String,
+        val phone: String,
+        val address: String
 ) {
     companion object {
         fun fromCustomer(customer: Customer): CustomerDto {
