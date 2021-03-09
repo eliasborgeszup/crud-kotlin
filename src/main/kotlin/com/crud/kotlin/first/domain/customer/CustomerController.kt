@@ -1,5 +1,6 @@
 package com.crud.kotlin.first.domain.customer
 
+import com.crud.kotlin.first.domain.customer.config.PageSizeValidator
 import com.crud.kotlin.first.domain.customer.dtos.request.CreateCustomerDto
 import com.crud.kotlin.first.domain.customer.dtos.request.UpdateCustomerDto
 import com.crud.kotlin.first.domain.customer.dtos.response.CustomerDto
@@ -17,6 +18,8 @@ import javax.validation.Valid
 class CustomerController(
     private var service: CustomerService
 ) {
+    val SIZE_MAX_PAGE: Int = 100
+
     @ResponseStatus(CREATED)
     @PostMapping
     fun create(@Valid @RequestBody dto: CreateCustomerDto): CustomerIdDto {
@@ -29,6 +32,8 @@ class CustomerController(
         @PageableDefault(sort = ["name"], direction = ASC, size = 20)
         page: Pageable,
     ): Page<CustomerDto>{
+        PageSizeValidator.validate("CustomerController", SIZE_MAX_PAGE, page.pageSize)
+
         return service.getAll(page).map { CustomerDto.fromCustomer(it) }
     }
 

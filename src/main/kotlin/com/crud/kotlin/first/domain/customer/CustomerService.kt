@@ -10,12 +10,11 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
-private val log: Logger = LoggerFactory.getLogger(CustomerService::class.java)
-
 @Service
 class CustomerService (
     private var repository: CustomerRepository
         ){
+    private val log: Logger = LoggerFactory.getLogger(CustomerService::class.java)
 
     fun create(dto: CreateCustomerDto): String {
         if(repository.existsByCpf(dto.cpf)){
