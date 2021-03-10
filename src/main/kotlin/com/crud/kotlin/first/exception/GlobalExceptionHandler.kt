@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.lang.Exception
+import java.util.*
+import java.util.Objects.nonNull
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -36,19 +38,21 @@ class GlobalExceptionHandler {
         return ErrorDto("Quantidade de paginas maior que o permitido.")
     }
 
-/*    @ResponseStatus(BAD_REQUEST)
+    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleIllegalArgumentException(exception: MethodArgumentNotValidException): List<ErrorDto>{
-        var errors: MutableList<ErrorDto> = mutableListOf()
+    fun handleIllegalArgumentException(exception: MethodArgumentNotValidException): List<ErrorDto> {
+        val errors: MutableList<ErrorDto> = mutableListOf()
 
-        for (error: ObjectError in exception.bindingResult.allErrors){
-            var messageDisplayed: StringBuilder = StringBuilder()
+        exception.bindingResult.allErrors.forEach {
+            if (nonNull(it.codes)) {
+                val messageDisplayed: StringBuilder = StringBuilder()
 
-            messageDisplayed.append(error.defaultMessage)
-            errors.add(error(messageDisplayed.toString()))
+                errors.add(ErrorDto(messageDisplayed.append(it.defaultMessage).toString()))
+            }
         }
+
         return errors
-    }*/
+    }
 
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)
